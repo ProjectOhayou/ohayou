@@ -75,6 +75,7 @@ namespace Flexlive.CQP.CSharpPlugins.Demo
         /// <param name="font">字体。</param>
         public override void GroupMessage(int subType, int sendTime, long fromGroup, long fromQQ, string fromAnonymous, string msg, int font)
         {
+            #region 学习操作
             string regextext = @"^(?=.*答：)(?=.*问：).*$";
             Regex regex = new Regex(regextext, RegexOptions.None);
             bool IsAsale = regex.IsMatch(msg.Trim());
@@ -82,13 +83,24 @@ namespace Flexlive.CQP.CSharpPlugins.Demo
             {
                 CQ.SendGroupMessage(fromGroup, String.Format("滚，老子不学"));
             }
-            else CQ.SendGroupMessage(fromGroup, String.Format("草拟粑粑"));
+            //else CQ.SendGroupMessage(fromGroup, String.Format("草拟粑粑"));
+
+            #endregion
+
+            #region 回答操作
+            //读取数据库信息
+
+            //如果数据库未读取到结果使用图灵Api
+            var tuLingMessage=TuLingApi.PostTuLingApi(msg);
+            CQ.SendGroupMessage(fromGroup, tuLingMessage);
+
+            #endregion
 
             // 处理群消息。
-                //var groupMember = CQ.GetGroupMemberInfo(fromGroup, fromQQ);
-                //CQ.SendGroupMessage(fromGroup, String.Format("[{4}]{0} 你的群名片：{1}， 入群时间：{2}， 最后发言：{3}。", CQ.CQCode_At(fromQQ),
-                //    groupMember.GroupCard, groupMember.JoinTime, groupMember.LastSpeakingTime, CQ.ProxyType));
-                //CQ.SendGroupMessage(fromGroup, String.Format("[{0}]{1}你发的群消息是：{2}", CQ.ProxyType, CQ.CQCode_At(fromQQ), msg));
+            //var groupMember = CQ.GetGroupMemberInfo(fromGroup, fromQQ);
+            //CQ.SendGroupMessage(fromGroup, String.Format("[{4}]{0} 你的群名片：{1}， 入群时间：{2}， 最后发言：{3}。", CQ.CQCode_At(fromQQ),
+            //    groupMember.GroupCard, groupMember.JoinTime, groupMember.LastSpeakingTime, CQ.ProxyType));
+            //CQ.SendGroupMessage(fromGroup, String.Format("[{0}]{1}你发的群消息是：{2}", CQ.ProxyType, CQ.CQCode_At(fromQQ), msg));
 
         }
 
